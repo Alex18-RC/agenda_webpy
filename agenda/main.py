@@ -3,14 +3,18 @@ import sqlite3
 
 urls = (
     "/", "Index",
-    "/insertar","Insertar"
+    "/insertar","Insertar",
     )
 
-render = web.template.render("templates/")
+template_globals = {
+    'app_path': lambda p: web.ctx.homepath + p,
+}
+
+render = web.template.render("templates/", globals=template_globals)
+
+#render = web.template.render("templates/")
 
 app = web.application(urls, globals())
-
-
 
 class Index:
     def GET(self):
@@ -29,7 +33,7 @@ class Insertar:
         try:
             return render.insertar()
         except Exception as error:
-            print(f"Error 002: {error.args[0]}")
+            print(f"Error 001: {error.args[0]}")
             return render.insertar()
             
     def POST(self):
@@ -43,10 +47,13 @@ class Insertar:
             )
             conection.commit()
             conection.close()
-            return render.index()
+            print(f"Inserted: {form.nombre}, {form.email}")
+            return web.seeother("/")
         except Exception as error:
-            print(f"Error 001: {error.args[0]}")
+            print(f"Error 002: {error.args[0]}")
             raise web.seeother("/")
+
+application = app.wsgifunc()
 
 if __name__ == "__main__":
     app.run()
