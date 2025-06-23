@@ -7,11 +7,16 @@ Ejemplo de una aplicacion web con SQLite3 y web.py
 **gunicorn** es WSGI HTTP Server para UNIX/Linux
 
 
-gunicorn -b 0.0.0.0:8080 main:application
+gunicorn -b 0.0.0.0:8080 main:app
 
-sudo gunicorn -b 0.0.0.0:80 main:application
+sudo gunicorn -b 0.0.0.0:80 main:app
 
 python3 main.py 8080
 
 sudo python3 main.py 80
 
+Set-ExecutionPolicy Unrestricted -Scope Process
+
+
+
+waitress-serve --listen=*:8080 main:app
