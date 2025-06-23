@@ -17,6 +17,8 @@ sudo python3 main.py 80
 
 Set-ExecutionPolicy Unrestricted -Scope Process
 
+Modificado desde la terminal de Windows:
+
 
 
 waitress-serve --listen=*:8080 main:app
