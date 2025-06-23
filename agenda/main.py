@@ -53,7 +53,7 @@ class Insertar:
             print(f"Error 002: {error.args[0]}")
             raise web.seeother("/")
 
-app = app.wsgifunc()
 
 if __name__ == "__main__":
+    app = app.wsgifunc()
     app.run()
