@@ -20,3 +20,8 @@ Set-ExecutionPolicy Unrestricted -Scope Process
 
 
 waitress-serve --listen=*:8080 main:app
+
+
+$ detalle = '/detalle/%s' % persona[0]
+                    $ editar = '/editar/%s' % persona[0]
+                    $ borrar = '/borrar/%s' % persona[0]

@@ -35,7 +35,7 @@ class Insertar:
         except Exception as error:
             print(f"Error 001: {error.args[0]}")
             return render.insertar()
-            
+
     def POST(self):
         try:
             form = web.input()
@@ -55,5 +55,5 @@ class Insertar:
 
 
 if __name__ == "__main__":
-    app = app.wsgifunc()
+    #app = app.wsgifunc()
     app.run()
