@@ -6,13 +6,7 @@ urls = (
     "/insertar","Insertar",
     )
 
-template_globals = {
-    'app_path': lambda p: web.ctx.homepath + p,
-}
-
-render = web.template.render("templates/", globals=template_globals)
-
-#render = web.template.render("templates/")
+render = web.template.render("templates/")
 
 app = web.application(urls, globals())
 
