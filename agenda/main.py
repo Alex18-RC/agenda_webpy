@@ -16,7 +16,7 @@ class Index:
             conection = sqlite3.connect("agenda.db")
             cursor = conection.cursor()
             personas = cursor.execute("select * from personas;")
-            print(f"PERSONAS: {personas}")
+            print(f"Consulta ejecutada correctamente")
             return render.index(personas)
         except Exception as error:
             print(f"Error 000: {error.args[0]}")
@@ -33,19 +33,22 @@ class Insertar:
     def POST(self):
         try:
             form = web.input()
+            print(f"Form data: {form}")
             conection = sqlite3.connect("agenda.db")
             cursor = conection.cursor()
-            cursor.execute(
-                "insert into personas(nombre,email) values (?, ?)",
-                (form.nombre, form.email),
-            )
+            sql = "INSERT INTO personas(nombre, email) VALUES (?, ?);"
+            data = (form.nombre, form.email)
+            cursor.execute(sql, data)
+            print("Executed SQL query successfully.")
             conection.commit()
             conection.close()
-            print(f"Inserted: {form.nombre}, {form.email}")
+            return web.seeother("/")
+        except sqlite3.OperationalError as error:
+            print(f"Error 002: {error.args[0]}")
             return web.seeother("/")
         except Exception as error:
-            print(f"Error 002: {error.args[0]}")
-            raise web.seeother("/")
+            print(f"Error 003: {error.args[0]}")
+            return web.seeother("/")
 
 application = app.wsgifunc()
 

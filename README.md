@@ -122,3 +122,23 @@ Si se desea ejecutar en el puerto 80, se debe ejecutar con permisos de superusua
 sudo python3 main.py 80
 ```
 
+## 6. Acceder a la aplicacion
+
+Para acceder a la aplicacion, se debe abrir un navegador web y escribir la siguiente URL:
+
+```
+http://localhost:8080
+```
+O si se ejecuta en el puerto 80, simplemente:
+
+```
+http://localhost
+```
+## 7. Desactivar el entorno virtual
+Para desactivar el entorno virtual, se puede utilizar el siguiente comando:
+
+```bash
+deactivate
+```
+## 8. Detener la aplicacion
+Para detener la aplicacion, se puede utilizar el comando `Ctrl+C` en la terminal donde se esta ejecutando la aplicacion. Si se esta ejecutando con gunicorn o waitress, se debe detener el proceso correspondiente.
