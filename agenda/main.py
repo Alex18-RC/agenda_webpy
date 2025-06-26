@@ -81,6 +81,7 @@ class Detalle:
             respuesta={
                 "persona" : {},
                 "error": "Error en la base de datos"
+            }
             return render.detalle(respuesta)
 
 application = app.wsgifunc()
