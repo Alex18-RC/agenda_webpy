@@ -16,11 +16,20 @@ class Index:
             conection = sqlite3.connect("agenda.db")
             cursor = conection.cursor()
             personas = cursor.execute("select * from personas;")
-            print(f"Consulta ejecutada correctamente")
-            return render.index(personas)
-        except Exception as error:
+            respuesta = {
+                "personas" : personas.fetchall(),
+                "error": None
+            }
+            print(f"RESPUESTA: {respuesta}")
+            return render.index(respuesta)
+        except sqlite3.OperationalError as error:
             print(f"Error 000: {error.args[0]}")
-            return render.index()
+            respuesta = {
+                "personas" : [],
+                "error": "Error en la base de datos"
+            }
+            print(f"RESPUESTA: {respuesta}")
+            return render.index(respuesta)
 
 class Insertar:
     def GET(self):

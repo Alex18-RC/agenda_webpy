@@ -1,4 +1,4 @@
-$def with(personas=[])
+$def with(respuesta={})
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -6,6 +6,10 @@ $def with(personas=[])
     </head>
     <body>
         <h1>SQLITE3 Personas</h1>
+
+        $if respuesta["error"] is not None:
+            <h2>$respuesta["error"]</h2>
+
         <a href="/insertar">Insertar</a>
 
         <table>
@@ -20,7 +24,7 @@ $def with(personas=[])
             </thead>
             <tbody>
 
-                $for persona in personas:
+                $for persona in respuesta["personas"]:
                     $ detalle = '/detalle/%s' % persona[0]
                     $ editar = '/editar/%s' % persona[0]
                     $ borrar = '/borrar/%s' % persona[0]
