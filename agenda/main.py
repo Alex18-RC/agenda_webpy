@@ -5,75 +5,94 @@ urls = (
     "/", "Index",
     "/insertar", "Insertar",
     r"/detalle/(\d+)", "Detalle",
+    r"/editar/(\d+)", "Editar",
+    r"/borrar/(\d+)", "Borrar"
 )
 
 render = web.template.render("templates/")
 
-app = web.application(urls, globals())
-
 class Index:
     def GET(self):
-        try:
-            conection = sqlite3.connect("agenda.db")
-            cursor = conection.cursor()
-            cursor.execute("SELECT * FROM personas;")
-            personas = cursor.fetchall()  # <-- Cambia esto
-            print("Consulta ejecutada correctamente")
-            return render.index(personas)
-        except Exception as error:
-            print("===== ERROR DETALLADO =====")
-            import traceback
-            traceback.print_exc()
-            print("===== FIN ERROR =====")
-            return "Error: " + str(error)
+        conn = sqlite3.connect('agenda.db')
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM personas")
+        rows = cursor.fetchall()
+        personas = [tuple(row) for row in rows]  # <-- Conversión aquí
+        conn.close()
+        return render.index(personas)
+
 
 class Insertar:
     def GET(self):
-        try:
-            return render.insertar()
-        except Exception as error:
-            print(f"Error 001: {error.args[0]}")
-            return render.insertar()
+        # Mostrar el formulario para insertar
+        return render.insertar()
 
     def POST(self):
-        try:
-            form = web.input()
-            print(f"Form data: {form}")
-            conection = sqlite3.connect("agenda.db")
-            cursor = conection.cursor()
-            sql = "INSERT INTO personas(nombre, email) VALUES (?, ?);"
-            data = (form.nombre, form.email)
-            cursor.execute(sql, data)
-            conection.commit()
-            last_id = cursor.lastrowid  # ID autoincremental recién generado
-            conection.close()
-            return web.seeother(f"/detalle/{last_id}")
-        except sqlite3.OperationalError as error:
-            print(f"Error 002: {error.args[0]}")
-            return web.seeother("/")
-        except Exception as error:
-            print(f"Error 003: {error.args[0]}")
-            return web.seeother("/")
+        # Recibir datos del formulario
+        data = web.input()
+        nombre = data.get('nombre')
+        email = data.get('email')
+
+        # Insertar en la base de datos
+        conn = sqlite3.connect('agenda.db')
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO personas (nombre, email) VALUES (?, ?)", (nombre, email))
+        conn.commit()
+        conn.close()
+
+        # Redireccionar al index para ver la lista actualizada
+        raise web.seeother('/')
+ 
 
 class Detalle:
     def GET(self, id):
         try:
-            con = sqlite3.connect("agenda.db")
-            cursor = con.cursor()
-            cursor.execute("SELECT id, nombre, email FROM personas WHERE id = ?;", (id,))
-            row = cursor.fetchone()
-            con.close()
-            if row:
-                persona = {'id': row[0], 'nombre': row[1], 'email': row[2]}
-                return render.detalle(persona)
+            conn = sqlite3.connect("agenda.db")
+            conn.row_factory = sqlite3.Row 
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM personas WHERE id = ?", (id,))
+            persona = cur.fetchone()
+            conn.close()
+
+            if persona:
+                return render.detalle({"persona": dict(persona), "error": None})
             else:
-                return "Persona no encontrada"
-        except Exception as error:
-            print("Error en Detalle:", error)
-            return "Error al mostrar el detalle"
+                return render.detalle({"persona": None, "error": "Persona no encontrada"})
+        except Exception as e:
+            return render.detalle({"persona": None, "error": str(e)})
         
 
-application = app.wsgifunc()
+
+class Editar:
+    def GET(self, id):
+        conn = sqlite3.connect("agenda.db")
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT * FROM personas WHERE id = ?", (id,))
+            persona = cursor.fetchone()
+            if persona:
+                return render.editar({"persona": dict(persona), "error": None})
+            else:
+                return render.editar({"persona": None, "error": "Persona no encontrada"})
+        except Exception as e:
+            return render.editar({"persona": None, "error": str(e)})
+        finally:
+            conn.close()
+
+        
+
+
+class Borrar:
+    def GET(self, id):
+        conn = sqlite3.connect("agenda.db")
+        cur = conn.cursor()
+        cur.execute("DELETE FROM personas WHERE id = ?", (id,))
+        conn.commit()
+        conn.close()
+        raise web.seeother("/")
 
 if __name__ == "__main__":
+    app = web.application(urls, globals())
     app.run()

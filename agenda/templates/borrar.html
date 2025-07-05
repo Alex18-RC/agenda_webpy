@@ -1,0 +1,20 @@
+$def with (persona)
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Borrar Persona</title>
+</head>
+<body>
+    <h1>Borrar Persona</h1>
+    <p>¿Está seguro que desea borrar el siguiente registro?</p>
+    <p><strong>ID:</strong> $persona['id_persona']</p>
+    <p><strong>Nombre:</strong> $persona['nombre']</p>
+    <p><strong>Email:</strong> $persona['email']</p>
+    <form method="POST" action="/borrar/$persona['id_persona']">
+        <input type="hidden" name="accion" value="borrar">
+        <input type="submit" value="Borrar">
+        <a href="/">Cancelar</a>
+    </form>
+</body>
+</html>

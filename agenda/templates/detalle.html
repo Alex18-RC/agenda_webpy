@@ -1,4 +1,4 @@
-$def with(persona)
+$def with (respuesta={})
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,16 +7,16 @@ $def with(persona)
 </head>
 <body>
     <h1>Detalle de Persona</h1>
-    <form>
-        <label>ID</label><br>
-        <input type="text" value="$persona['id']" readonly><br><br>
 
-        <label>Nombre</label><br>
-        <input type="text" value="$persona['nombre']" readonly><br><br>
+    $if respuesta["error"] is not None:
+        <p><strong>$respuesta["error"]</strong></p>
+    $else:
+        <ul>
+            <li><strong>ID:</strong> $respuesta["persona"][0]</li>
+            <li><strong>Nombre:</strong> $respuesta["persona"][1]</li>
+            <li><strong>Email:</strong> $respuesta["persona"][2]</li>
+        </ul>
 
-        <label>Email</label><br>
-        <input type="text" value="$persona['email']" readonly><br><br>
-    </form>
     <a href="/">Volver al listado</a>
 </body>
 </html>

@@ -1,9 +1,9 @@
-$def with(personas=[])
+$def with (personas)
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Listado de Personas</title>
+    <meta charset="UTF-8" />
+    <title>Personas - Listado</title>
 </head>
 <body>
     <h1>Listado de Personas</h1>
@@ -11,22 +11,24 @@ $def with(personas=[])
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Detalle</th>
+                <th>ID</th><th>Nombre</th><th>Email</th><th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            $for persona in personas:
-                <tr>
-                    <td>$persona[0]</td>
-                    <td>$persona[1]</td>
-                    <td>$persona[2]</td>
-                    <td><a href="/detalle/$persona[0]">Ver detalle</a></td>
-                </tr>
+        $for p in personas:
+            <tr>
+                <td>$p['id_persona']</td>
+                <td>$p['nombre']</td>
+                <td>$p['email']</td>
+                <td>
+                    <a href="/detalle/$p['id_persona']">Detalle</a> |
+                    <a href="/editar/$p['id_persona']">Editar</a> |
+                    <a href="/borrar/$p['id_persona']">Borrar</a>
+                </td>
+            </tr>
+        $else:
+            <tr><td colspan="4">No hay personas registradas</td></tr>
         </tbody>
     </table>
 </body>
 </html>
-

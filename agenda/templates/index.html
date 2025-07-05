@@ -1,0 +1,34 @@
+$def with (personas)
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Listado de Personas</title>
+</head>
+<body>
+    <h1>Personas</h1>
+    <a href="/insertar">Insertar</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Detalles</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+    <tbody>
+        $for persona in personas:
+            <tr>
+                <td>$persona[0]</td>
+                <td>$persona[1]</td>
+                <td>$persona[2]</td>
+                <td><a href="/detalle/$persona[0]">Detalles</a></td>
+                <td><a href="/editar/$persona[0]">Editar</a></td>
+            </tr>
+    </tbody>
+
+    </table>
+</body>
+</html>

@@ -1,4 +1,5 @@
-$def with()
+$def with ()
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,16 +7,17 @@ $def with()
     <title>Insertar Persona</title>
 </head>
 <body>
-    <h1>Insertar Nueva Persona</h1>
+    <h1>Agregar nueva persona</h1>
     <form method="POST" action="/insertar">
         <label>Nombre:</label><br>
         <input type="text" name="nombre" required><br><br>
-
+        
         <label>Email:</label><br>
         <input type="email" name="email" required><br><br>
-
+        
         <input type="submit" value="Guardar">
     </form>
+    <br>
     <a href="/">Volver al listado</a>
 </body>
 </html>

@@ -1,17 +1,30 @@
-$def with(persona)
+$def with (respuesta={})
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Editar Persona</title>
 </head>
 <body>
     <h1>Editar Persona</h1>
-    <form method="POST">
-        <label>Nombre:</label><br>
-        <input type="text" name="nombre" value="$persona.nombre"><br>
-        <label>Email:</label><br>
-        <input type="text" name="email" value="$persona.email"><br><br>
-        <input type="submit" value="Guardar cambios">
-    </form>
+
+    $if respuesta["error"] is not None:
+        <p><strong style="color:red;">$respuesta["error"]</strong></p>
+
+    $if respuesta["persona"]:
+        <form method="POST">
+            <label>Nombre:</label><br>
+            <input type="text" name="nombre" value="$respuesta['persona']['nombre']" required><br><br>
+
+            <label>Email:</label><br>
+            <input type="email" name="email" value="$respuesta['persona']['email']" required><br><br>
+
+            <input type="submit" value="Guardar cambios">
+        </form>
+    $else:
+        <p>Persona no encontrada.</p>
+
+    <br>
+    <a href="/">Volver al listado</a>
 </body>
 </html>
