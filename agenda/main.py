@@ -3,9 +3,9 @@ import sqlite3
 
 urls = (
     "/", "Index",
-    "/insertar","Insertar",
-    "/detalle/(.*)", "Detalle"
-    )
+    "/insertar", "Insertar",
+    r"/detalle/(\d+)", "Detalle",
+)
 
 render = web.template.render("templates/")
 
@@ -16,20 +16,16 @@ class Index:
         try:
             conection = sqlite3.connect("agenda.db")
             cursor = conection.cursor()
-            personas = cursor.execute("select * from personas;")
-            respuesta = {
-                "personas" : personas.fetchall(),
-                "error": None
-            }
-            return render.index(respuesta)
-        except sqlite3.OperationalError as error:
-            print(f"Error 000: {error.args[0]}")
-            respuesta = {
-                "personas" : [],
-                "error": "Error en la base de datos"
-            }
-            print(f"RESPUESTA: {respuesta}")
-            return render.index(respuesta)
+            cursor.execute("SELECT * FROM personas;")
+            personas = cursor.fetchall()  # <-- Cambia esto
+            print("Consulta ejecutada correctamente")
+            return render.index(personas)
+        except Exception as error:
+            print("===== ERROR DETALLADO =====")
+            import traceback
+            traceback.print_exc()
+            print("===== FIN ERROR =====")
+            return "Error: " + str(error)
 
 class Insertar:
     def GET(self):
@@ -48,10 +44,10 @@ class Insertar:
             sql = "INSERT INTO personas(nombre, email) VALUES (?, ?);"
             data = (form.nombre, form.email)
             cursor.execute(sql, data)
-            print("Executed SQL query successfully.")
             conection.commit()
+            last_id = cursor.lastrowid  # ID autoincremental recién generado
             conection.close()
-            return web.seeother("/")
+            return web.seeother(f"/detalle/{last_id}")
         except sqlite3.OperationalError as error:
             print(f"Error 002: {error.args[0]}")
             return web.seeother("/")
@@ -59,33 +55,25 @@ class Insertar:
             print(f"Error 003: {error.args[0]}")
             return web.seeother("/")
 
-
 class Detalle:
-
-    def GET(self,id_persona):
+    def GET(self, id):
         try:
-            conection = sqlite3.connect("agenda.db")
-            cursor = conection.cursor()
-            sql = "select * from personas where id_persona = ?;"
-            datos = (id_persona,)
-            personas = cursor.execute(sql,datos)
-            
-            respuesta={
-                "persona" : personas.fetchone(),
-                "error": None
-            }
-            print(f"RESPUESTA: {respuesta}")
-            return render.detalle(respuesta)
-        except sqlite3.OperationalError as error:
-            print(f"Error 004: {error.args[0]}")
-            respuesta={
-                "persona" : {},
-                "error": "Error en la base de datos"
-            }
-            return render.detalle(respuesta)
+            con = sqlite3.connect("agenda.db")
+            cursor = con.cursor()
+            cursor.execute("SELECT id, nombre, email FROM personas WHERE id = ?;", (id,))
+            row = cursor.fetchone()
+            con.close()
+            if row:
+                persona = {'id': row[0], 'nombre': row[1], 'email': row[2]}
+                return render.detalle(persona)
+            else:
+                return "Persona no encontrada"
+        except Exception as error:
+            print("Error en Detalle:", error)
+            return "Error al mostrar el detalle"
+        
 
 application = app.wsgifunc()
-
 
 if __name__ == "__main__":
     app.run()

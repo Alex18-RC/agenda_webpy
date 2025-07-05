@@ -1,19 +1,21 @@
+$def with()
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <title>SQLITE demo</title>
-    </head>
-    <body>
-        <h1>SQLITE3 Personas</h1>
+<head>
+    <meta charset="UTF-8">
+    <title>Insertar Persona</title>
+</head>
+<body>
+    <h1>Insertar Nueva Persona</h1>
+    <form method="POST" action="/insertar">
+        <label>Nombre:</label><br>
+        <input type="text" name="nombre" required><br><br>
 
-        <form method="POST">
-            <label>Nombre</label>
-            <input type="text" name="nombre" id="nombre">
-            <br>
-            <label>Email</label>
-            <input type="text" name="email" id="email">
-            <br>
-            <input type="submit" value="Agregar">
-        </form>
-    </body>
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <input type="submit" value="Guardar">
+    </form>
+    <a href="/">Volver al listado</a>
+</body>
 </html>
