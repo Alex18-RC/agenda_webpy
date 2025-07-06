@@ -1,4 +1,6 @@
 $def with (respuesta={})
+$persona = respuesta.get("persona", {})
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,18 +10,18 @@ $def with (respuesta={})
 <body>
     <h1>Editar Persona</h1>
 
-    $if respuesta["error"] is not None:
-        <p><strong style="color:red;">$respuesta["error"]</strong></p>
+    $if respuesta.get("error"):
+        <p style="color:red;">$respuesta["error"]</p>
 
-    $if respuesta["persona"]:
-        <form method="POST">
+    $if persona:
+        <form method="POST" action="/editar/$persona['id']">
             <label>Nombre:</label><br>
-            <input type="text" name="nombre" value="$respuesta['persona']['nombre']" required><br><br>
+            <input type="text" name="nombre" value="$persona['nombre']" required><br><br>
 
             <label>Email:</label><br>
-            <input type="email" name="email" value="$respuesta['persona']['email']" required><br><br>
+            <input type="email" name="email" value="$persona['email']" required><br><br>
 
-            <input type="submit" value="Guardar cambios">
+            <input type="submit" value="Guardar Cambios">
         </form>
     $else:
         <p>Persona no encontrada.</p>

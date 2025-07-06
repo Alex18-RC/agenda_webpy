@@ -9,6 +9,7 @@ urls = (
     r"/borrar/(\d+)", "Borrar"
 )
 
+web.template.Template.globals.clear()
 render = web.template.render("templates/")
 
 class Index:
@@ -25,25 +26,19 @@ class Index:
 
 class Insertar:
     def GET(self):
-        # Mostrar el formulario para insertar
         return render.insertar()
 
     def POST(self):
-        # Recibir datos del formulario
         data = web.input()
         nombre = data.get('nombre')
         email = data.get('email')
-
-        # Insertar en la base de datos
         conn = sqlite3.connect('agenda.db')
         cursor = conn.cursor()
         cursor.execute("INSERT INTO personas (nombre, email) VALUES (?, ?)", (nombre, email))
         conn.commit()
         conn.close()
-
-        # Redireccionar al index para ver la lista actualizada
         raise web.seeother('/')
- 
+
 
 class Detalle:
     def GET(self, id):
@@ -66,20 +61,39 @@ class Detalle:
 
 class Editar:
     def GET(self, id):
-        conn = sqlite3.connect("agenda.db")
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
         try:
+            conn = sqlite3.connect("agenda.db")
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
             cursor.execute("SELECT * FROM personas WHERE id = ?", (id,))
             persona = cursor.fetchone()
+            conn.close()
+
             if persona:
                 return render.editar({"persona": dict(persona), "error": None})
             else:
                 return render.editar({"persona": None, "error": "Persona no encontrada"})
         except Exception as e:
             return render.editar({"persona": None, "error": str(e)})
-        finally:
+
+    def POST(self, id):
+        data = web.input()
+        nombre = data.get('nombre')
+        email = data.get('email')
+
+        try:
+            conn = sqlite3.connect("agenda.db")
+            cursor = conn.cursor()
+            cursor.execute("UPDATE personas SET nombre = ?, email = ? WHERE id = ?", (nombre, email, id))
+            conn.commit()
             conn.close()
+            raise web.seeother("/")
+        except Exception as e:
+            return render.editar({
+                "persona": {"id": id, "nombre": nombre, "email": email},
+                "error": str(e)
+            })
+
 
         
 

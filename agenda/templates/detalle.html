@@ -1,4 +1,5 @@
 $def with (respuesta={})
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,13 +9,13 @@ $def with (respuesta={})
 <body>
     <h1>Detalle de Persona</h1>
 
-    $if respuesta["error"] is not None:
-        <p><strong>$respuesta["error"]</strong></p>
+    $if respuesta["error"]:
+        <p style="color:red;"><strong>$respuesta["error"]</strong></p>
     $else:
         <ul>
-            <li><strong>ID:</strong> $respuesta["persona"][0]</li>
-            <li><strong>Nombre:</strong> $respuesta["persona"][1]</li>
-            <li><strong>Email:</strong> $respuesta["persona"][2]</li>
+            <li><strong>ID:</strong> $respuesta["persona"]["id"]</li>
+            <li><strong>Nombre:</strong> $respuesta["persona"]["nombre"]</li>
+            <li><strong>Email:</strong> $respuesta["persona"]["email"]</li>
         </ul>
 
     <a href="/">Volver al listado</a>

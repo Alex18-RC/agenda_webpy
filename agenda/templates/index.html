@@ -19,14 +19,14 @@ $def with (personas)
             </tr>
         </thead>
         <tbody>
-$for persona in personas:
-            <tr>
-                <td>$persona[0]</td>
-                <td>$persona[1]</td>
-                <td>$persona[2]</td>
-                <td><a href="/detalle/$persona[0]">Detalles</a></td>
-                <td><a href="/editar/$persona[0]">Editar</a></td>
-            </tr>
+            $for persona in personas:
+                <tr>
+                    <td>${persona[0]}</td>
+                    <td>${persona[1]}</td>
+                    <td>${persona[2]}</td>
+                    <td><a href="/detalle/${persona[0]}">Detalles</a></td>
+                    <td><a href="/editar/${persona[0]}">Editar</a></td>
+                </tr>
         </tbody>
     </table>
 </body>
