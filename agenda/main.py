@@ -6,7 +6,7 @@ urls = (
     "/insertar", "Insertar",
     r"/detalle/(\d+)", "Detalle",
     r"/editar/(\d+)", "Editar",
-    r"/borrar/(\d+)", "Borrar"
+    r"/borrar/(\d+)", "Borrar",
 )
 
 web.template.Template.globals.clear()
@@ -70,11 +70,11 @@ class Editar:
             conn.close()
 
             if persona:
-                return render.editar({"persona": dict(persona), "error": None})
+                return render.editar(persona=dict(persona), error=None)
             else:
-                return render.editar({"persona": None, "error": "Persona no encontrada"})
+                return render.editar(persona=None, error="Persona no encontrada")
         except Exception as e:
-            return render.editar({"persona": None, "error": str(e)})
+            return render.editar(persona=None, error=str(e))
 
     def POST(self, id):
         data = web.input()
@@ -89,10 +89,7 @@ class Editar:
             conn.close()
             raise web.seeother("/")
         except Exception as e:
-            return render.editar({
-                "persona": {"id": id, "nombre": nombre, "email": email},
-                "error": str(e)
-            })
+            return render.editar(persona={"id": id, "nombre": nombre, "email": email}, error=str(e))
 
 
         
@@ -100,12 +97,36 @@ class Editar:
 
 class Borrar:
     def GET(self, id):
-        conn = sqlite3.connect("agenda.db")
-        cur = conn.cursor()
-        cur.execute("DELETE FROM personas WHERE id = ?", (id,))
-        conn.commit()
-        conn.close()
-        raise web.seeother("/")
+        try:
+            conn = sqlite3.connect("agenda.db")
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM personas WHERE id = ?", (id,))
+            persona = cursor.fetchone()
+            conn.close()
+
+            if persona:
+                return render.borrar({"persona": dict(persona)})
+            else:
+                return render.borrar({"persona": None, "error": "Persona no encontrada"})
+        except Exception as e:
+            return render.borrar({"persona": None, "error": str(e)})
+
+    def POST(self, id):
+        try:
+            conn = sqlite3.connect("agenda.db")
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM personas WHERE id = ?", (id,))
+            conn.commit()
+            conn.close()
+            raise web.seeother("/")
+        except Exception as e:
+            return f"Error al borrar: {str(e)}"
+
+
+
+
+
 
 if __name__ == "__main__":
     app = web.application(urls, globals())

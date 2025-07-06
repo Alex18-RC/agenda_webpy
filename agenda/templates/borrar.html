@@ -1,21 +1,29 @@
-$def with (persona)
+$def with (respuesta={})
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Borrar Persona</title>
 </head>
 <body>
     <h1>Borrar Persona</h1>
-    <p>¿Está seguro que desea borrar el siguiente registro?</p>
-    <p><strong>ID:</strong> $persona['id']</p>
-    <p><strong>Nombre:</strong> $persona['nombre']</p>
-    <p><strong>Email:</strong> $persona['email']</p>
 
-    <form method="POST" action="/borrar/${persona['id']}">
-        <input type="hidden" name="accion" value="borrar">
-        <input type="submit" value="Borrar">
-        <a href="/">Cancelar</a>
-    </form>
+    $if "error" in respuesta and respuesta["error"]:
+        <p style="color:red;">Error: $respuesta["error"]</p>
+    $elif "persona" in respuesta and respuesta["persona"]:
+        <p>¿Está seguro que desea borrar el siguiente registro?</p>
+        <p><strong>ID:</strong> $respuesta["persona"]["id"]</p>
+        <p><strong>Nombre:</strong> $respuesta["persona"]["nombre"]</p>
+        <p><strong>Email:</strong> $respuesta["persona"]["email"]</p>
+
+        <form method="POST" action="/borrar/${respuesta['persona']['id']}">
+            <input type="submit" value="Borrar">
+            <a href="/">Cancelar</a>
+        </form>
+    $else:
+        <p>Persona no encontrada.</p>
+
+    <br><a href="/">Volver al listado</a>
 </body>
 </html>
