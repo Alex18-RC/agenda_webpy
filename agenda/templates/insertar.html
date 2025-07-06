@@ -5,9 +5,77 @@ $def with ()
 <head>
     <meta charset="UTF-8">
     <title>Insertar Persona</title>
+
+    <style>
+        body {
+            /*font-family: Arial, sans-serif;*/
+            background-color: #f9fbfc;
+            margin: 0;
+            padding: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px auto;
+            color: #000000;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.76);
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background-color: #0e308f;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #162141;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0e308f;
+            font-weight: bold;
+            font-size: 16px;
+            /*text-decoration: none;*/
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 <body>
     <h1>Agregar nueva persona</h1>
+
     <form method="POST" action="/insertar">
         <label>Nombre:</label><br>
         <input type="text" name="nombre" required><br><br>

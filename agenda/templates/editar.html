@@ -5,12 +5,79 @@ $def with (persona=None, error=None)
 <head>
     <meta charset="UTF-8">
     <title>Editar Persona</title>
+
+    <style>
+        body {
+            background-color: #f9fbfc;
+            margin: 0;
+            padding: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px auto;
+            color: #0e308f;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.719);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        input[type="submit"] {
+        background-color: #0e308f;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        display: block;        /* Hace que el botón ocupe toda la línea */
+        margin: 20px auto 0;   /* Centrado horizontal con un poco de margen superior */
+        }
+
+
+        p {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0e308f;
+            font-weight: bold;
+            font-size: 16px;
+            /*text-decoration: none;*/
+        }
+    </style>
+
 </head>
 <body>
     <h1>Editar Persona</h1>
 
     $if error:
-        <p style="color:red;">$error</p>
+        <p>$error</p>
 
     $if persona:
         <form method="POST" action="/editar/${persona['id']}">

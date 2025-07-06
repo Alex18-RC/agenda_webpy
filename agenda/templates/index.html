@@ -4,14 +4,62 @@ $def with (personas)
 <head>
     <meta charset="UTF-8" />
     <title>Listado de Personas</title>
+    <style>
+        table {
+        max-width: 800px;   /* ancho máximo para que no ocupe todo el espacio */
+        margin: 20px auto;  /* margen vertical y centrado horizontal */
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        thead th {
+            background-color: #2c3e50;
+            color: white;
+            font-weight: bold;
+            text-align: left;
+        }
+        tbody tr:hover {
+            background-color: #f0f8ff;
+        }
+        /* elimina el borde inferior en la última fila para que el borde redondeado se vea limpio */
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        a.insertar-link {
+        display: block;           /* Hace que el link ocupe toda la línea para centrarlo */
+        width: max-content;       /* Ancho mínimo según el contenido */
+        margin: 20px auto;        /* Centrado horizontal con margen arriba y abajo */
+        color: #0e308f;  
+        font-family: 'Arial', sans-serif;  /* Fuente Arial */
+        font-weight: bold;
+        font-size: 18px;
+        /*text-decoration: none; */
+        padding: 8px 16px;
+        /*border: 2px solid #ff6600;*/
+        border-radius: 8px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    </style>
+
+
+
+
 </head>
 <body>
-    <h1>Personas</h1>
-    <a href="/insertar">Insertar</a>
+    <h1 style="text-align: center; margin: 20px auto;  ">Personas</h1>
+    
     <table border="1">
         <thead>
             <tr>
-                <th>ID</th>
+                <!--<th>ID</th>-->
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Detalles</th>
@@ -22,7 +70,7 @@ $def with (personas)
         <tbody>
             $for persona in personas:
                 <tr>
-                    <td>${persona[0]}</td>
+                    <!--<td>${persona[0]}</td>-->
                     <td>${persona[1]}</td>
                     <td>${persona[2]}</td>
                     <td><a href="/detalle/${persona[0]}">Detalles</a></td>
@@ -31,5 +79,6 @@ $def with (personas)
                 </tr>
         </tbody>
     </table>
+    <a href="/insertar" class="insertar-link">Insertar</a>
 </body>
 </html>

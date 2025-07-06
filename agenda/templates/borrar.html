@@ -5,25 +5,103 @@ $def with (respuesta={})
 <head>
     <meta charset="UTF-8">
     <title>Borrar Persona</title>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.829);
+            max-width: 400px;
+            margin: 0 auto;
+            display: inline-block;
+            text-align: left;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        strong {
+            color: #0e308f;
+        }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #25156b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #39356b;
+        }
+
+        .cancelar {
+            background-color: #29277096;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+        }
+
+        .cancelar:hover {
+            background-color: #95a5a6;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+
+
 </head>
 <body>
     <h1>Borrar Persona</h1>
 
     $if "error" in respuesta and respuesta["error"]:
-        <p style="color:red;">Error: $respuesta["error"]</p>
+        <p class="error">Error: $respuesta["error"]</p>
     $elif "persona" in respuesta and respuesta["persona"]:
-        <p>¿Está seguro que desea borrar el siguiente registro?</p>
-        <p><strong>ID:</strong> $respuesta["persona"]["id"]</p>
-        <p><strong>Nombre:</strong> $respuesta["persona"]["nombre"]</p>
-        <p><strong>Email:</strong> $respuesta["persona"]["email"]</p>
-
-        <form method="POST" action="/borrar/${respuesta['persona']['id']}">
-            <input type="submit" value="Borrar">
-            <a href="/">Cancelar</a>
+        <form method="POST" action="/borrar/${respuesta['persona']['id']}" onsubmit="return confirmarBorrado();">
+            <p>¿estás seguro de borrar el registro?</p>
+            <p><strong>ID:</strong> <br> ${respuesta["persona"]["id"]}</p>
+            <p><strong>Nombre:</strong> <br> ${respuesta["persona"]["nombre"]}</p>
+            <p><strong>Email:</strong> <br> ${respuesta["persona"]["email"]}</p>
+            
+            
+            <div class="botones">
+                <input type="submit" value="Borrar">
+                <a href="/" class="cancelar">Cancelar</a>
+            </div>
         </form>
     $else:
         <p>Persona no encontrada.</p>
 
-    <br><a href="/">Volver al listado</a>
 </body>
 </html>

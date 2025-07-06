@@ -5,17 +5,62 @@ $def with (respuesta={})
 <head>
     <meta charset="UTF-8">
     <title>Detalle Persona</title>
+
+    <style>
+        body {
+            background-color: #f9fbfc;
+            margin: 0;
+            padding: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px auto;
+            color: #0e308f;
+        }
+        ul {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.685);
+            list-style-type: none;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        ul li {
+            margin: 10px 0;
+        }
+        p {
+            max-width: 400px;
+            margin: 20px auto;
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0e308f;
+            font-weight: bold;
+            font-size: 16px;
+            /*text-decoration: none;*/
+        }
+    </style>
+
+
 </head>
 <body>
     <h1>Detalle de Persona</h1>
 
     $if respuesta['error']:
-        <p style="color:red;"><strong>$respuesta['error']</strong></p>
+        <p"><strong>$respuesta['error']</strong></p>
     $else:
         <ul>
-            <li><strong>ID:</strong> $respuesta['persona']['id']</li>
-            <li><strong>Nombre:</strong> $respuesta['persona']['nombre']</li>
-            <li><strong>Email:</strong> $respuesta['persona']['email']</li>
+            <!--<li><strong>ID:</strong> <br> $respuesta['persona']['id']</li>-->
+            <li><strong>Nombre:</strong> <br> $respuesta['persona']['nombre']</li>
+            <li><strong>Email:</strong> <br> $respuesta['persona']['email']</li>
         </ul>
 
     <a href="/">Volver al listado</a>
